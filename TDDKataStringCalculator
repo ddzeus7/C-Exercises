@@ -1,0 +1,82 @@
+#include <iostream>
+#include <sstream>
+
+int add(std::string numbers)
+{
+    while(numbers != "q")
+    {
+        std::string number;
+        std::string neg;
+        int numberCount = 0;
+        int nonNumbers = 0;
+        int totalValue = 0;
+        bool allowReturn = false;
+        bool exceptionThrow = false;
+    
+        if(numbers.empty())
+        {
+            return 0;
+        }
+        
+        for(int j = 0; j < numbers.length(); j++)
+        {
+            int temp;
+            if( isdigit(numbers[j]))
+            {
+                number = numbers.substr(j, numbers.length() - j );
+                temp = atoi(number.c_str());
+                int l = j - 1;
+                if(temp > 0)
+                {
+                    numberCount += 1;
+                    totalValue = totalValue + temp;
+                } 
+                if(temp > 0 && numbers[l] == '-')
+                {
+                    neg += numbers[l];
+                    neg += numbers[j];
+                    neg += ";";
+                    exceptionThrow = true;
+                }
+            } 
+            else
+            {
+                nonNumbers += 1;
+            }
+            allowReturn = true;
+        }
+        
+        if(exceptionThrow == true)
+        {
+            std::cout << neg << "\n";
+            allowReturn = false;
+            throw "negative not allowed";
+        }
+        
+        if (nonNumbers > 0 && numberCount == 0)
+            {
+                std::cout << "The provided number is invalid" << std::endl;
+                allowReturn = false;
+            }
+            
+        if(allowReturn == true)
+        {
+            std::cout << "The total value is:" << "\n";
+            std::cout << "-> " << totalValue << std::endl;
+            return totalValue;
+        }
+        else
+        {
+            std::cout << "Provide a different set of numbers" << std::endl;
+        }
+    }
+    system("PAUSE");
+}
+
+int main()
+{
+    std::string numbers = "";
+    std::cout << "Please insert a combination of characters/numbers and press q to quit!" << "\n";
+    std::cin >> numbers;
+    add(numbers);
+}
